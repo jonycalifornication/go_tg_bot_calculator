@@ -1,7 +1,22 @@
 package main
 
-import "fmt"
+import (
+	tele "gopkg.in/telebot.v4"
+	"time"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	b, err := tele.NewBot(tele.Settings{
+		Token:  "...",
+		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
+	})
+	if err != nil {
+		return
+	}
+
+	b.Handle("/start", func(c tele.Context) error {
+		return c.Send("Hello world!")
+	})
+
+	b.Start()
 }
